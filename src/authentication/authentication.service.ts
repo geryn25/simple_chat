@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common/exceptions';
+import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private readonly prismaService : PrismaService) {}
+    constructor(private readonly prismaService : PrismaService, private readonly jwtService : JwtService) {}
 
     async validateUser(username : string,password : string) : Promise<any> {
         try {
@@ -19,6 +20,12 @@ export class AuthenticationService {
         } catch (error) {
             throw new UnauthorizedException()
         }
+    }
+    async login(user : any) {
+        console.log(user)
+        const payload = {username : user.username, name : user.name}
+        return {access_token : this.jwtService.sign(payload), expires_in : '3600s'}
+
     }
     async register(data : CreateUserDto) {
         try {
