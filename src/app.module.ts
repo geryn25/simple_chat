@@ -4,10 +4,14 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ConversationModule } from './conversation/conversation.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { ChatModule } from './chat/chat.module';
+import { AppGateway } from './app/app.gateway';
+import { ConversationService } from './conversation/conversation.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [AuthenticationModule, ConversationModule, PrismaModule],
+  imports: [AuthenticationModule, ConversationModule, PrismaModule, ChatModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway, ConversationService, JwtService],
 })
 export class AppModule {}
