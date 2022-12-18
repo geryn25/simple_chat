@@ -28,8 +28,12 @@
 
 ## Installation
 
+***1. Install postgres environment first***
+***2. change the "env.example" to ".env" and change the variable to fit your database***
+
 ```bash
 $ npm install
+$ npx prisma migration dev --name init
 ```
 
 ## Running the app
@@ -45,18 +49,9 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Postman Collection
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+[Postman Collection]([https://pages.github.com/](https://api.postman.com/collections/23446428-78c83b56-24d0-45fc-8f64-ff80e08d4f93?access_key=PMAT-01GMHCE0TR5QR1E9A6CFEZZ6AZ))
 
 ## Support
 
