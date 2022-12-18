@@ -26,6 +26,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Repository
+
+(https://github.com/geryn25/simple_chat)
+
 ## Installation
 
 ***1. Install postgres environment first***
