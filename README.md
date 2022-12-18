@@ -29,6 +29,7 @@
 ## Installation
 
 ***1. Install postgres environment first***
+
 ***2. change the "env.example" to ".env" and change the variable to fit your database***
 
 ```bash
