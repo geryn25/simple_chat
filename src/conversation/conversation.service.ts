@@ -59,7 +59,7 @@ export class ConversationService {
     return `This action returns all conversation`;
   }
 
-  async findOne(id: string, user: UserModel) {
+  async findOne(id: number, user: UserModel) {
     //check if user have access to room
     try {
       const rooms = await this.prismaService.room.findFirstOrThrow({
@@ -99,8 +99,9 @@ export class ConversationService {
 
       // get unread count
       const unreadCount = await this.prismaService.chat.count({
-        where: { room_id: conversations[i].id, read: false },
+        where: { room_id: conversations[i].id, read: false, receiver : user.username },
       });
+      delete conversations[i].participant
       conversations[i]['last_message'] = lastMessage.content;
       conversations[i]['unread_count'] = unreadCount;
       conversations[i]['name'] = getInfo.name;

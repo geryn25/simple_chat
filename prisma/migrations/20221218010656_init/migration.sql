@@ -1,10 +1,12 @@
 -- CreateTable
 CREATE TABLE "Chat" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+    "id" SERIAL NOT NULL,
     "sender" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "content" TEXT NOT NULL,
-    "room_id" UUID NOT NULL,
+    "room_id" INTEGER NOT NULL,
+    "read" BOOLEAN NOT NULL DEFAULT false,
+    "receiver" VARCHAR NOT NULL,
 
     CONSTRAINT "Chat_pkey" PRIMARY KEY ("id")
 );
@@ -22,7 +24,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Room" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+    "id" SERIAL NOT NULL,
     "participant" TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -30,13 +32,13 @@ CREATE TABLE "Room" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Chat_room_id_key" ON "Chat"("room_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
-ALTER TABLE "Chat" ADD CONSTRAINT "Chat_sender_fkey" FOREIGN KEY ("sender") REFERENCES "User"("username") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "Chat" ADD CONSTRAINT "Chat_receiver_fkey" FOREIGN KEY ("receiver") REFERENCES "User"("username") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "Chat" ADD CONSTRAINT "Chat_room_id_fkey" FOREIGN KEY ("room_id") REFERENCES "Room"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Chat" ADD CONSTRAINT "Chat_sender_fkey" FOREIGN KEY ("sender") REFERENCES "User"("username") ON DELETE CASCADE ON UPDATE NO ACTION;

@@ -1,0 +1,44 @@
+services:
+  chat_db:
+    image: postgres
+    restart: always
+    container_name: postgresprisma
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    networks:
+      - simple_chat_network
+    volumes:
+      - ./script/uuid.sql:/docker-entrypoint-initdb.d/create_extension.sql
+      - chat_db:/var/lib/postgresql/data
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - .:/app
+      - /path/to/libssl.so.1.1:/path/to/libssl.so.1.1
+    env_file:
+      - .env
+    # Run a command against the development stage of the image
+    command: npm run start:dev
+    networks:
+      - simple_chat_network
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - chat_db
+
+networks:
+  simple_chat_network:
+    driver: bridge
+
+volumes: 
+  chat_db:
+    driver : local
+  

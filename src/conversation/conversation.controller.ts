@@ -20,13 +20,15 @@ export class ConversationController {
   }
   @Post(':id/reply')
   createReply(@Param('id') id: string, @Request() req,@Body() body) {
-    return this.conversationService.createReply(id, body, req.user);
+    return this.conversationService.createReply(+id, body, req.user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Request() req) {
-    const messages = this.conversationService.findOne(id, req.user);
-    this.conversationService.readChat(id,req.user);
+  async findOne(@Param('id') id: string, @Request() req) {
+    const messages = await this.conversationService.findOne(+id, req.user);
+    if (messages.length != 0) {
+      await this.conversationService.readChat(+id,req.user);
+    }
     return messages
   }
 
